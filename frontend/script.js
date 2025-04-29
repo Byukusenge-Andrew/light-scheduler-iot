@@ -29,18 +29,26 @@ function connectWebSocket() {
 
 connectWebSocket();
 
-document.getElementById('scheduleForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const onTime = document.getElementById('onTime').value;
-    const offTime = document.getElementById('offTime').value;
-    const schedule = { onTime, offTime };
-    console.log('Submitting schedule:', schedule);
-    if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(schedule));
-        console.log('Schedule sent to server');
-        document.getElementById('status').textContent = 'Status: Schedule sent!';
+// Ensure form exists before binding
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('scheduleForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const onTime = document.getElementById('onTime').value;
+            const offTime = document.getElementById('offTime').value;
+            const schedule = { onTime, offTime };
+            console.log('Submitting schedule:', schedule);
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(schedule));
+                console.log('Schedule sent to server');
+                document.getElementById('status').textContent = 'Status: Schedule sent!';
+            } else {
+                console.error('WebSocket not open:', ws.readyState);
+                document.getElementById('status').textContent = 'Status: WebSocket not connected';
+            }
+        });
     } else {
-        console.error('WebSocket not open:', ws.readyState);
-        document.getElementById('status').textContent = 'Status: WebSocket not connected';
+        console.error('Form with ID "scheduleForm" not found');
     }
 });
