@@ -29,7 +29,6 @@ function connectWebSocket() {
 
 connectWebSocket();
 
-// Ensure form exists before binding
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('scheduleForm');
     if (form) {

@@ -41,7 +41,7 @@ client.on_message = on_message
 print("Connecting to MQTT broker at localhost:1883")
 try:
     client.connect("localhost", 1883, 60)
-    client.loop_start()  # Run MQTT loop in background
+    client.loop_start()
 except Exception as e:
     print(f"Failed to connect to MQTT broker: {e}")
     exit(1)
@@ -50,12 +50,10 @@ except Exception as e:
 while True:
     if current_schedule:
         current_time = datetime.now().strftime('%H:%M:%S')
-        if current_time == current_schedule['on_time']:
-            if arduino:
-                arduino.write(b'1\n')
-                print(f"[{current_time}] Sent to Arduino: 1")
-        elif current_time == current_schedule['off_time']:
-            if arduino:
-                arduino.write(b'0\n')
-                print(f"[{current_time}] Sent to Arduino: 0")
+        if current_time == current_schedule['on_time'] and arduino:
+            arduino.write(b'1\n')
+            print(f"[{current_time}] Sent to Arduino: 1 (Relay ON, Light ON)")
+        elif current_time == current_schedule['off_time'] and arduino:
+            arduino.write(b'0\n')
+            print(f"[{current_time}] Sent to Arduino: 0 (Relay OFF, Light OFF)")
     time.sleep(1)

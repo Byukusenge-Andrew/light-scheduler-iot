@@ -1,9 +1,9 @@
-const int LED_PIN = 13;
+const int RELAY_PIN = 8; // Relay IN pin
 String command;
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
+  pinMode(RELAY_PIN, OUTPUT);
+  digitalWrite(RELAY_PIN, HIGH); // Start with relay OFF (Active LOW, light OFF)
   Serial.begin(9600);
   while (!Serial) {
     ;
@@ -16,11 +16,11 @@ void loop() {
     command = Serial.readStringUntil('\n');
     command.trim();
     if (command == "1") {
-      digitalWrite(LED_PIN, HIGH);
-      Serial.println("LED ON");
+      digitalWrite(RELAY_PIN, LOW); // Activate relay (Active LOW, light ON)
+      Serial.println("Relay ON, Light ON");
     } else if (command == "0") {
-      digitalWrite(LED_PIN, LOW);
-      Serial.println("LED OFF");
+      digitalWrite(RELAY_PIN, HIGH); // Deactivate relay (light OFF)
+      Serial.println("Relay OFF, Light OFF");
     } else {
       Serial.println("Unknown command: " + command);
     }
